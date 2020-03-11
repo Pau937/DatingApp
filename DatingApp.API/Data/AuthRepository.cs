@@ -1,6 +1,5 @@
 ﻿using DatingApp.API.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading.Tasks;
 
 namespace DatingApp.API.Data
@@ -22,6 +21,11 @@ namespace DatingApp.API.Data
 
 		public async Task<User> Register(User user, string password)
 		{
+			if (await UserExists(user.UserName))
+			{
+				throw new System.Exception("Username already exists.");
+			}
+
 			byte[] passwordHash, passwordSalt;
 			CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
